@@ -7,7 +7,24 @@
     <groupId>ch.ebu</groupId>
     <artifactId>opentools</artifactId>
     <version>1.0.0</version>
+    <name>Miscellaneous tools for IaaC, Iot</name>
     <packaging>jar</packaging>
+    <description>This is a simple library for providing useful library mainly related to IaaC and Iot</description>
+    <url>https://github.com/ebu/opentools.git</url>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git://github.com/ebu/opentools.git</connection>
+        <developerConnection>scm:ssh://github.com:ebu/opentools.git</developerConnection>
+        <url>https://github.com/ebu/opentools</url>
+    </scm>
 
     <build>
         <plugins>
@@ -32,17 +49,7 @@
     <dependencies>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-hibernate5</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-xml</artifactId>
             <version>${jackson.version}</version>
         </dependency>
     </dependencies>
