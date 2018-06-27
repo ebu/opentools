@@ -8,7 +8,23 @@ import java.time.ZoneOffset;
 public class JSONProperties {
 
     private String timestamp;
-    private String payload;
+    private String projectId;
+    private String stageId;
+    private String message;
+
+    public JSONProperties(String projectId, String message) {
+        this.timestamp = DateUtil.stringFrom(LocalDateTime.now(ZoneOffset.UTC), "yyyy-MM-dd HH:mm:ss").concat(" UTC");
+        this.projectId = projectId;
+        this.stageId = "";
+        this.message = message;
+    }
+
+    public JSONProperties(String projectId, String stageId, String message) {
+        this.timestamp = DateUtil.stringFrom(LocalDateTime.now(ZoneOffset.UTC), "yyyy-MM-dd HH:mm:ss").concat(" UTC");
+        this.projectId = projectId;
+        this.stageId = stageId;
+        this.message = message;
+    }
 
     public String getTimestamp() {
         return timestamp;
@@ -18,16 +34,27 @@ public class JSONProperties {
         this.timestamp = timestamp;
     }
 
-    public String getPayload() {
-        return payload;
+    public String getProjectId() {
+        return projectId;
     }
 
-    public void setPayload(String payload) {
-        this.payload = payload;
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
     }
 
-    public JSONProperties(String payload) {
-        this.timestamp = DateUtil.stringFrom(LocalDateTime.now(ZoneOffset.UTC), "yyyy-MM-dd HH:mm:ss").concat(" UTC");
-        this.payload = payload;
+    public String getStageId() {
+        return stageId;
+    }
+
+    public void setStageId(String stageId) {
+        this.stageId = stageId;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
