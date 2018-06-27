@@ -44,6 +44,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>8</java.version>
         <jackson.version>2.9.4</jackson.version>
+        <junit5.version>5.2.0</junit5.version>
+		<mysql-connector-java.version>5.1.46</mysql-connector-java.version>
     </properties>
 
     <dependencies>
@@ -52,6 +54,19 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit5.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector-java.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>
