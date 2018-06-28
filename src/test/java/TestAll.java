@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 public class TestAll {
     static int poolSize = 3;
     static long expirationTimeInSeconds = 10;
@@ -89,7 +88,8 @@ public class TestAll {
     }
 
     public static void startPool() {
-        connectionPool = new ConnectionPool(poolSize, expirationTimeInSeconds * 1000,
+        connectionPool = ConnectionPool.getInstance();
+        connectionPool.buildPool(poolSize, expirationTimeInSeconds * 1000,
                 "com.mysql.jdbc.Driver", "jdbc:mysql://db4free.net:3306/metairie",
                 "rootmetairie", "eurovision");
     }

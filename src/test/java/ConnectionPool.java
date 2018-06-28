@@ -8,10 +8,32 @@ import java.sql.SQLException;
 //and therefore must be implemented by the subclass
 public class ConnectionPool extends ObjectPool<Connection> {
 
+    private static volatile ConnectionPool instance;
+
+    private ConnectionPool() {
+    }
+
+    public static ConnectionPool getInstance() {
+        if (instance == null) {
+            synchronized (ConnectionPool.class) {
+                if (instance == null) {
+                    instance = new ConnectionPool();
+                }
+            }
+        }
+        return instance;
+    }
+
     private String dsn, usr, pwd;
 
-    public ConnectionPool(int poolSize, long expirationTime, String driver, String dsn, String usr, String pwd) {
-        super(poolSize, expirationTime);
+    @Override
+    public void buildPool(int poolSize, long expirationTime) {
+        this.setPoolSize(poolSize);
+        this.setExpirationTime(expirationTime);
+    }
+
+    public void buildPool(int poolSize, long expirationTime, String driver, String dsn, String usr, String pwd) {
+        buildPool(poolSize, expirationTime);
         try {
             Class.forName(driver).newInstance();
         } catch (Exception e) {

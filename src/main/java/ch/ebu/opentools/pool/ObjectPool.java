@@ -9,9 +9,7 @@ public abstract class ObjectPool<T> {
 
     private Hashtable<T, Long> unlocked, locked;
 
-    public ObjectPool(int poolSize, long expirationTime) {
-        this.poolSize = poolSize; // default objects maximum
-        this.expirationTime = expirationTime; // 30 seconds
+    protected ObjectPool() {
         unlocked = new Hashtable<>();
         locked = new Hashtable<>();
     }
@@ -21,6 +19,8 @@ public abstract class ObjectPool<T> {
     public abstract boolean validate(T t);
 
     public abstract void expire(T t);
+
+    public abstract void buildPool(int poolSize, long expirationTime);
 
     public int getPooledObjectNumber() {
         return locked.size();
@@ -150,5 +150,21 @@ public abstract class ObjectPool<T> {
                 unlocked.remove(t);
             }
         }
+    }
+
+    public long getExpirationTime() {
+        return expirationTime;
+    }
+
+    public void setExpirationTime(long expirationTime) {
+        this.expirationTime = expirationTime;
+    }
+
+    public int getPoolSize() {
+        return poolSize;
+    }
+
+    public void setPoolSize(int poolSize) {
+        this.poolSize = poolSize;
     }
 }
