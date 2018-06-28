@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-//The three remaining methods are abstract
-//and therefore must be implemented by the subclass
 public class ConnectionPool extends ObjectPool<Connection> {
 
     private static volatile ConnectionPool instance;

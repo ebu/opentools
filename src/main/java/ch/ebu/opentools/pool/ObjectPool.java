@@ -79,7 +79,7 @@ public abstract class ObjectPool<T> {
     }
 
     /**
-     * add object in pool
+     * remove object in pool
      *
      * @param t
      */
@@ -109,8 +109,7 @@ public abstract class ObjectPool<T> {
     }
 
     /**
-     * free all object
-     * expiration
+     * free all object not depending on expiration
      */
     public synchronized void freeAll() {
         long now = System.currentTimeMillis();
@@ -127,6 +126,7 @@ public abstract class ObjectPool<T> {
 
     /**
      * remove all objects (unlocked and locked)
+     * force expiration
      */
     public synchronized void shutdownAll() {
         long now = System.currentTimeMillis();
