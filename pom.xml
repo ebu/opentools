@@ -6,10 +6,10 @@
 
     <groupId>ch.ebu</groupId>
     <artifactId>opentools</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>Miscellaneous tools for IaaC, Iot</name>
     <packaging>jar</packaging>
-    <description>This is a simple library for providing useful library mainly related to IaaC and Iot</description>
+    <description>This is a simple library for providing tools mainly for IaaC and Iot</description>
     <url>https://github.com/ebu/opentools.git</url>
 
     <licenses>
@@ -20,20 +20,105 @@
         </license>
     </licenses>
 
+    <developers>
+        <developer>
+            <name>Stephane Metairie</name>
+            <email>metairie@ebu.ch</email>
+            <organization>ch.ebu.metairie</organization>
+            <organizationUrl>www.ebu.ch</organizationUrl>
+        </developer>
+    </developers>
+
     <scm>
         <connection>scm:git:git://github.com/ebu/opentools.git</connection>
         <developerConnection>scm:ssh://github.com:ebu/opentools.git</developerConnection>
         <url>https://github.com/ebu/opentools</url>
     </scm>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+<!-- Configuration has been prepared, now you can:
+* Deploy snapshot artifacts into repository https://oss.sonatype.org/content/repositories/snapshots
+* Deploy release artifacts into the staging repository https://oss.sonatype.org/service/local/staging/deploy/maven2
+* Promote staged artifacts into repository 'Releases'
+* Download snapshot and release artifacts from group https://oss.sonatype.org/content/groups/public
+* Download snapshot, release and staged artifacts from staging group https://oss.sonatype.org/content/groups/staging
+
+please comment on this ticket when you promoted your first release, thanks
+-->
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
                 <configuration>
                     <source>8</source>
                     <target>8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- GPG plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <!-- Set this to true and the release will automatically proceed and sync to Central Repository will follow  -->
+                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
                 </configuration>
             </plugin>
         </plugins>
@@ -45,7 +130,7 @@
         <java.version>8</java.version>
         <jackson.version>2.9.4</jackson.version>
         <junit5.version>5.2.0</junit5.version>
-		<mysql-connector-java.version>5.1.46</mysql-connector-java.version>
+        <mysql-connector-java.version>5.1.46</mysql-connector-java.version>
     </properties>
 
     <dependencies>
