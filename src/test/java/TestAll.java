@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -9,22 +11,27 @@ import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestAll {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TestAll.class);
+
     static int poolSize = 3;
     static long expirationTimeInSeconds = 10;
     static ConnectionPool connectionPool;
 
     @BeforeAll
-    static void up() {
+    public static void up() {
+        LOG.debug("start the pool");
         startPool();
     }
 
     @AfterAll
-    static void down() {
+    public static void down() {
+        LOG.debug("down the pool");
         shutDownPool();
     }
 
     @Test
-    void testA_Basic() throws InterruptedException, SQLException {
+    public void testA_Basic() throws InterruptedException, SQLException {
         int connectionTest = 6;
         // try to take over the pool size
         Connection[] connectionArray = new Connection[connectionTest];
@@ -95,6 +102,7 @@ public class TestAll {
     }
 
     public static void shutDownPool() {
-        connectionPool.shutdownAll();
+        if (connectionPool != null)
+            connectionPool.shutdownAll();
     }
 }

@@ -43,62 +43,52 @@
         <repository>
             <id>ossrh</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+<!--            <url>https://oss.sonatype.org/content/repositories/releases/</url>-->
         </repository>
     </distributionManagement>
 
-<!-- Configuration has been prepared, now you can:
-* Deploy snapshot artifacts into repository https://oss.sonatype.org/content/repositories/snapshots
-* Deploy release artifacts into the staging repository https://oss.sonatype.org/service/local/staging/deploy/maven2
-* Promote staged artifacts into repository 'Releases'
-* Download snapshot and release artifacts from group https://oss.sonatype.org/content/groups/public
-* Download snapshot, release and staged artifacts from staging group https://oss.sonatype.org/content/groups/staging
+    <!-- Configuration has been prepared, now you can:
+    * Deploy snapshot artifacts into repository https://oss.sonatype.org/content/repositories/snapshots
+    * Deploy release artifacts into the staging repository https://oss.sonatype.org/service/local/staging/deploy/maven2
+    * Promote staged artifacts into repository 'Releases'
+    * Download snapshot and release artifacts from group https://oss.sonatype.org/content/groups/public
+    * Download snapshot, release and staged artifacts from staging group https://oss.sonatype.org/content/groups/staging
 
-please comment on this ticket when you promoted your first release, thanks
--->
+    please comment on this ticket when you promoted your first release, thanks
+    -->
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>8</java.version>
+        <jackson.version>2.9.4</jackson.version>
+        <junit5.version>5.2.0</junit5.version>
+        <mysql-connector-java.version>5.1.46</mysql-connector-java.version>
+        <slf4j.version>1.7.25</slf4j.version>
+
+        <!-- plugin version -->
+        <plugin-build-helper.version>3.0.0</plugin-build-helper.version>
+        <plugin-changelog.version>2.3</plugin-changelog.version>
+        <plugin-compiler.version>3.8.0</plugin-compiler.version>
+        <plugin-dependency.version>3.1.1</plugin-dependency.version>
+        <plugin-findbugs.version>3.0.5</plugin-findbugs.version>
+        <plugin-gpg.version>1.6</plugin-gpg.version>
+        <plugin-javadoc.version>3.0.1</plugin-javadoc.version>
+        <plugin-nexus-staging.version>1.6.8</plugin-nexus-staging.version>
+        <plugin-owasp.version>3.3.1</plugin-owasp.version>
+        <plugin-surefire.version>2.22.0</plugin-surefire.version>
+        <plugin-source.version>3.0.1</plugin-source.version>
+        <plugin-versions.version>2.5</plugin-versions.version>
+    </properties>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
+            <!-- deployment -->
             <!-- GPG plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.6</version>
+                <version>${plugin-gpg.version}</version>
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>
@@ -109,10 +99,11 @@ please comment on this ticket when you promoted your first release, thanks
                     </execution>
                 </executions>
             </plugin>
+            <!-- sonatype repo -->
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.7</version>
+                <version>${plugin-nexus-staging.version}</version>
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>ossrh</serverId>
@@ -121,17 +112,116 @@ please comment on this ticket when you promoted your first release, thanks
                     <autoReleaseAfterClose>false</autoReleaseAfterClose>
                 </configuration>
             </plugin>
-        </plugins>
-    </build>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>8</java.version>
-        <jackson.version>2.9.4</jackson.version>
-        <junit5.version>5.2.0</junit5.version>
-        <mysql-connector-java.version>5.1.46</mysql-connector-java.version>
-    </properties>
+            <!-- compiler -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${plugin-compiler.version}</version>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+
+            <!-- javadoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${plugin-javadoc.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- quality -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+                <version>${plugin-findbugs.version}</version>
+            </plugin>
+
+            <!-- OWASP dependency-check is an open source solution the OWASP Top 10 2013 entry:
+             A9 - Using Components with Known Vulnerabilities.
+             see https://www.owasp.org/index.php/Top_10_2013-A9-Using_Components_with_Known_Vulnerabilities -->
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>${plugin-owasp.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- The dependency plugin provides the capability to manipulate artifacts.
+            It can copy and/or unpack artifacts from local or remote repositories to a specified location. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>${plugin-dependency.version}</version>
+            </plugin>
+
+            <!-- Manage versions of your project, its modules, dependencies and plugins -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>${plugin-versions.version}</version>
+            </plugin>
+
+            <!-- Generate a list of recent changes from your SCM. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-changelog-plugin</artifactId>
+                <version>${plugin-changelog.version}</version>
+            </plugin>
+
+            <!-- Attach extra artifacts and source folders to build. -->
+              <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${plugin-source.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Run the JUnit unit tests in an isolated classloader -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${plugin-surefire.version}</version>
+                <configuration>
+                    <childDelegation>true</childDelegation>
+                    <enableAssertions>true</enableAssertions>
+                    <forkMode>always</forkMode>
+                    <systemProperties>
+                        <property>
+                            <name>file.encoding</name>
+                            <value>UTF-8</value>
+                        </property>
+                    </systemProperties>
+                </configuration>
+            </plugin>
+        </plugins>
+
+    </build>
 
     <dependencies>
         <dependency>
@@ -150,6 +240,13 @@ please comment on this ticket when you promoted your first release, thanks
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql-connector-java.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
 
     </dependencies>
